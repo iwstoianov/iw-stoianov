@@ -1,0 +1,63 @@
+name: Update Macro Dashboard
+
+# Wanneer draait de robot?
+on:
+  # 1) Handmatig via de "Run workflow"-knop (stap 7 in de LEESMIJ)
+  workflow_dispatch:
+  # 2) Automatisch elke 15 minuten
+  schedule:
+    - cron: "*/15 * * * *"
+  # 3) Ook bij elke wijziging in build.py of het template
+  push:
+    branches: [main]
+    paths:
+      - "build.py"
+      - "template.html"
+      - ".github/workflows/update.yml"
+
+# Rechten die GitHub Pages nodig heeft om te publiceren
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Voorkom dat twee builds elkaar in de weg zitten
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python klaarzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dashboard bouwen (koersen ophalen + index.html maken)
+        env:
+          TWELVE_DATA_KEY: ${{ secrets.TWELVE_DATA_KEY }}
+        run: python build.py
+
+      - name: Pages voorbereiden
+        uses: actions/configure-pages@v5
+
+      - name: Bestanden inpakken
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publiceren naar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
