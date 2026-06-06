@@ -1,2 +1,5 @@
 # wordt automatisch gebouwd door build.py / GitHub Actions
 index.html
+
+# TradingView MCP-server wordt lokaal gecloned via scripts/setup-tradingview-mcp.sh
+vendor/
