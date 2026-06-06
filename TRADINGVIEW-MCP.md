@@ -51,6 +51,22 @@ claude mcp list
 
 Open daarna een nieuwe Claude Code-sessie en vraag: *"Gebruik `tv_health_check`."*
 
+### Snelkoppeling: `tv-start`
+
+Zodat je stap 3 (TradingView met debug-poort starten) voortaan met één woord kunt
+doen, voeg je eenmalig een alias toe aan je zsh-config:
+
+```bash
+echo 'alias tv-start="~/tradingview-mcp/scripts/launch_tv_debug_mac.sh"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Daarna start je TradingView (met verbinding aan) gewoon met:
+
+```bash
+tv-start
+```
+
 ## Verbinden met live data
 
 De server praat met de **TradingView Desktop-app** via het Chrome DevTools
