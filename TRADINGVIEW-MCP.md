@@ -28,6 +28,29 @@ Vereisten: **Node.js 18+** en **git**.
 Start daarna Claude Code opnieuw, zodat de `tradingview`-server wordt geladen.
 Geen API-keys nodig.
 
+## Snelstart macOS (overal beschikbaar in Claude)
+
+De `.mcp.json` hierboven activeert de server alleen binnen déze repo. Wil je
+TradingView in **elk** Claude Code-project gebruiken, installeer de server dan op
+een vaste plek en registreer hem op user-niveau:
+
+```bash
+# 1) Server clonen + installeren (eenmalig)
+git clone https://github.com/tradesdontlie/tradingview-mcp.git ~/tradingview-mcp
+cd ~/tradingview-mcp && npm install
+
+# 2) Aan Claude Code koppelen (user-scope = beschikbaar in elk project)
+claude mcp add tradingview --scope user -- node ~/tradingview-mcp/src/server.js
+
+# 3) TradingView Desktop starten met debug-poort (script vindt de app automatisch)
+~/tradingview-mcp/scripts/launch_tv_debug_mac.sh
+
+# 4) Controleren of de koppeling staat
+claude mcp list
+```
+
+Open daarna een nieuwe Claude Code-sessie en vraag: *"Gebruik `tv_health_check`."*
+
 ## Verbinden met live data
 
 De server praat met de **TradingView Desktop-app** via het Chrome DevTools
